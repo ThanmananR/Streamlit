@@ -20,7 +20,7 @@ def load_model():
 model = load_model()
 
 # -------------------- Page Config (Must Be First) --------------------
-st.set_page_config(page_title="💼 Insurance Predictor", layout="centered", page_icon="💰")
+st.set_page_config(page_title=" Insurance Predictor", layout="centered", page_icon="")
 
 # -------------------- Header & Animated Banner --------------------
 st.markdown("""
