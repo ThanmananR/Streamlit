@@ -10,17 +10,28 @@ Original file is located at
 import streamlit as st
 import numpy as np
 import pickle
-import joblib
+import os
 
+# Load model
 @st.cache_resource
 def load_model():
-    model=joblib.load("stu(1).pkl")
-    return model
+    model_path = 'insurance_model.pkl'
+    if not os.path.exists(model_path):
+        st.error("🚫 Model file not found. Please upload 'insurance_model.pkl' to the same directory.")
+        st.stop()
+    with open(model_path, 'rb') as f:
+        return pickle.load(f)
 
 model = load_model()
 
-st.set_page_config(page_title="💼 Insurance Predictor", layout="centered", page_icon="💰")
+# Page setup
+st.set_page_config(
+    page_title="💼 Insurance Predictor",
+    layout="centered",
+    page_icon="💰"
+)
 
+# Custom styles and title
 st.markdown("""
     <style>
         .banner {
@@ -53,6 +64,7 @@ st.markdown("""
     <div class="banner">🏥 Predict Medical Charges Instantly | Developed by konjam_kadhalxx | Streamlit Pro UI 🌟</div>
 """, unsafe_allow_html=True)
 
+# Input form
 with st.form("prediction_form", clear_on_submit=False):
     st.subheader("🧾 Enter Personal Information")
 
@@ -67,16 +79,16 @@ with st.form("prediction_form", clear_on_submit=False):
         sex = st.radio("🧑 Sex", ['Male', 'Female'], horizontal=True)
         smoker = st.radio("🚬 Smoker", ['Yes', 'No'], horizontal=True)
 
+    # Encode inputs
     sex = 1 if sex == "Male" else 0
     smoker = 1 if smoker == "Yes" else 0
 
     submit = st.form_submit_button("🔍 Estimate Charges")
 
-
+# Prediction and result
 if submit:
     data = np.array([[age, sex, bmi, children, smoker]])
     prediction = model.predict(data)[0]
-
 
     st.markdown("""
         <style>
