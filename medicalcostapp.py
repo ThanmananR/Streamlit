@@ -10,11 +10,12 @@ Original file is located at
 import streamlit as st
 import numpy as np
 import pickle
+import joblib
 
 @st.cache_resource
 def load_model():
-    with open('insurance_model.pkl', 'rb') as f:
-        return pickle.load(f)
+    model=joblib.load("stu(1).pkl")
+    return model
 
 model = load_model()
 
